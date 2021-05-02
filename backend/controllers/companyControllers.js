@@ -13,7 +13,7 @@ const getCompany = asyncHandler(async (req, res) => {
         name: {
           // can put also brand
           $regex: req.query.keyword, // query  ex iph for iphone
-          $options: "i",             //case-insensitive
+          $options: "i", //case-insensitive
         },
       }
     : {};
@@ -61,58 +61,49 @@ const deleteCompany = asyncHandler(async (req, res) => {
 // @route   POST /api/companies
 // @access  Private/Admin
 const createCompany = asyncHandler(async (req, res) => {
-//   const company = new Company({
-//     name: "Sample name",
-//     address: "Sample address",
-//    user:req.user.id,
-//   });
+  //   const company = new Company({
+  //     name: "Sample name",
+  //     address: "Sample address",
+  //    user:req.user.id,
+  //   });
 
-//   const createdCompany = await company.save();
-//   res.status(201).json(createdCompany);
-// });
+  //   const createdCompany = await company.save();
+  //   res.status(201).json(createdCompany);
+  // });
 
-const { name, address} = req.body;
+  const { name, address } = req.body;
 
+  const company = await Company.create({
+    name,
+    address,
 
-
-const company = await Company.create({ 
-  name,  
-  address,
-  
-  user:req.user.id
-});
-if (company) {
-  res.status(200).json({
-    _id: company._id,
-    name: company.name,
-    address: company.address,
-    owner: company.owner,
-    employee: company.employee,
-  }); 
-} else {
-  res.status(400);
-  throw new Error("Invalid company");
-}
+    user: req.user.id,
+  });
+  if (company) {
+    res.status(200).json({
+      _id: company._id,
+      name: company.name,
+      address: company.address,
+      owner: company.owner,
+      employee: company.employee,
+    });
+  } else {
+    res.status(400);
+    throw new Error("Invalid company");
+  }
 });
 
 // @desc    Update a company
 // @route   PUT /api/companies/:id
 // @access  Private/Admin
 const updateCompany = asyncHandler(async (req, res) => {
-  const {
-    name,
-    address,
-   
-  
-  } = req.body;
+  const { name, address } = req.body;
 
   const company = await Company.findById(req.params.id);
 
   if (company) {
     company.name = name || company.name;
     company.address = address || company.address;
-   
-  
 
     const updatedCompany = await company.save();
     res.json(updatedCompany);
@@ -126,16 +117,13 @@ const updateCompany = asyncHandler(async (req, res) => {
 // @route   POST /api/companies/:id/owner
 // @access  Private/Admin
 const createOwner = asyncHandler(async (req, res) => {
- 
-  
   const { name, title } = req.body;
-  
+
   const company = await Company.findById(req.params.id);
-  
-  const owner ={ 
-    name,  
+
+  const owner = {
+    name,
     title,
-    
   };
 
   company.owner.push(owner);
@@ -146,29 +134,24 @@ const createOwner = asyncHandler(async (req, res) => {
       _id: owner._id,
       name: owner.name,
       title: owner.title,
-     
-    }); 
+    });
   } else {
     res.status(400);
     throw new Error("Invalid owner");
   }
-  });
-
+});
 
 // @desc    Create an employee
 // @route   POST /api/companies/:id/employee
 // @access  Private/Admin
 const createEmployee = asyncHandler(async (req, res) => {
- 
-  
   const { name, title } = req.body;
-  
+
   const company = await Company.findById(req.params.id);
-  
-  const employee ={ 
-    name,  
+
+  const employee = {
+    name,
     title,
-    
   };
 
   company.employee.push(employee);
@@ -179,38 +162,12 @@ const createEmployee = asyncHandler(async (req, res) => {
       _id: employee._id,
       name: employee.name,
       title: employee.title,
-     
-    }); 
+    });
   } else {
     res.status(400);
     throw new Error("Invalid owner");
   }
-  });
-
-//   // @desc    Update a Company
-// // @route   PUT /api/products/:id
-// // @access  Private/Admin
-// const updateCompany = asyncHandler(async (req, res) => {
-//   const {
-//     name,
-//     address
-//   } = req.body;
-
-//   const company = await Company.findById(req.params.id);
-
-//   if (company) {
-//    company.name = name;
-//    company.address= address;
-   
-
-//     const updatedCompany = await company.save();
-//     res.json(updatedCompany);
-//   } else {
-//     res.status(404);
-//     throw new Error("Company not found");
-//   }
-// });
-
+});
 
 export {
   getCompany,
@@ -220,6 +177,4 @@ export {
   updateCompany,
   createOwner,
   createEmployee,
-  
-  
 };
