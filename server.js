@@ -2,9 +2,9 @@ import express from 'express'
 import dotenv from "dotenv";
 import morgan from 'morgan'
 import colors from 'colors'
-import connectDB from '../config/db.js'
-import userRoute from './routes/userRoute.js'
-import companyRoute from './routes/companyRoute.js'
+import connectDB from './config/db.js'
+import userRoute from './backend/routes/userRoute.js'
+import companyRoute from './backend/routes/companyRoute.js'
 
 // import userRoute from './routes/userRoute.js'
 // import postRoute from './routes/postRoute.js'
