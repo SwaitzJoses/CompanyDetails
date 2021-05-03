@@ -14,13 +14,13 @@ import {
 } from "../controllers/companyControllers.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
-router.route("/").get(getCompany).post(protect, admin, createCompany);
+router.route("/").get(getCompany).post(protect,  createCompany);
 
 router
   .route("/:id")
   .get(getCompanyById)
-  .delete(protect, admin, deleteCompany)
-  .put(protect, admin, updateCompany);
+  .delete(protect, deleteCompany)
+  .put(protect,  updateCompany);
 
   router.route("/:id/owner").post(protect, createOwner);
   router.route("/:id/employee").post(protect, createEmployee);

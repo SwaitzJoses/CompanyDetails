@@ -5,26 +5,14 @@ import asyncHandler from "express-async-handler";
 //route : Get/api/companies/:keyword&
 //access: Public
 const getCompany = asyncHandler(async (req, res) => {
-  const pageSize = 4;
-  const page = Number(req.query.pageNumber) || 1; // query
-
-  const keyword = req.query.keyword
-    ? {
-        name: {
-          // can put also brand
-          $regex: req.query.keyword, // query  ex iph for iphone
-          $options: "i", //case-insensitive
-        },
-      }
-    : {};
-
-  console.log(keyword);
-  const count = await Company.countDocuments({ ...keyword });
-  const company = await Company.find({ ...keyword }) // also = keyword
-    .limit(pageSize) // take these
-    .skip(pageSize * (page - 1)); //  2 out, it will show all
-
-  res.json({ company, page, pages: Math.ceil(count / pageSize) });
+ 
+  const company = await Company.find({});
+  if (company) {
+    res.json(company);
+  } else {
+    res.status(404).json({ message: "company not found" });
+  }
+  
 });
 
 //description:  Fetch a company
