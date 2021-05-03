@@ -5,8 +5,16 @@ import asyncHandler from "express-async-handler";
 //route : Get/api/companies/:keyword&
 //access: Public
 const getCompany = asyncHandler(async (req, res) => {
- 
-  const company = await Company.find({});
+ const keyword = req.query.keyword
+  ? {
+   name: {
+     $regex : req.query.keyword,
+     $options : "i",
+   },
+ }
+ : {};
+ console.log(keyword);
+  const company = await Company.find({...keyword});
   if (company) {
     res.json(company);
   } else {

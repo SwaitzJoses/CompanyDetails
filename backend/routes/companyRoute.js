@@ -14,7 +14,7 @@ import {
 } from "../controllers/companyControllers.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
-router.route("/").get(getCompany).post(protect,  createCompany);
+router.route("/").get( getCompany).post(protect,  createCompany);
 
 router
   .route("/:id")
